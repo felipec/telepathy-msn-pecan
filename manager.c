@@ -1,4 +1,5 @@
 #include "manager.h"
+#include "connection.h"
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-protocol.h>
@@ -59,9 +60,18 @@ new_connection (TpBaseConnectionManager *self,
 		void *parsed_params,
 		GError **error)
 {
-    g_assert_not_reached ();
+    Params *params;
+    PecanTpConnection *conn;
 
-    return NULL;
+    g_debug ("new connection");
+
+    params = parsed_params;
+    conn = PECAN_TP_CONNECTION (g_object_new (PECAN_TP_CONNECTION_TYPE,
+					      "account", params->account,
+					      "password", params->password,
+					      "protocol", proto,
+					      NULL));
+    return (TpBaseConnection *) conn;
 }
 
 static void
