@@ -141,6 +141,7 @@ start_connecting (TpBaseConnection *conn,
     conn->self_handle = tp_handle_ensure (contact_repo, self->priv->account, NULL, NULL);
 
     self->priv->session = pecan_session_new (self->priv->account, self->priv->password);
+    pecan_session_connect (self->priv->session, "messenger.hotmail.com", 1863);
 
     tp_base_connection_change_status (conn, TP_CONNECTION_STATUS_CONNECTED, TP_CONNECTION_STATUS_REASON_REQUESTED);
 
@@ -151,6 +152,7 @@ static void
 shut_down (TpBaseConnection *conn)
 {
     PecanTpConnection *self = PECAN_TP_CONNECTION (conn);
+    pecan_session_disconnect (self->priv->session);
     pecan_session_free (self->priv->session);
     tp_base_connection_finish_shutdown (conn);
 }
