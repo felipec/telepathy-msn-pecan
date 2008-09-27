@@ -1,0 +1,3 @@
+*.o
+.*.d
+telepathy-msn-pecan
