@@ -16,12 +16,17 @@ instance_init (GTypeInstance *instance,
 
 typedef struct {
     gchar *account;
+    gchar *password;
 } Params;
 
 static const TpCMParamSpec params[] = {
     { "account", DBUS_TYPE_STRING_AS_STRING, G_TYPE_STRING,
-	TP_CONN_MGR_PARAM_FLAG_REQUIRED | TP_CONN_MGR_PARAM_FLAG_REGISTER, NULL,
+	TP_CONN_MGR_PARAM_FLAG_REQUIRED, NULL,
 	G_STRUCT_OFFSET (Params, account),
+	tp_cm_param_filter_string_nonempty, NULL },
+    { "password", DBUS_TYPE_STRING_AS_STRING, G_TYPE_STRING,
+	TP_CONN_MGR_PARAM_FLAG_REQUIRED, NULL,
+	G_STRUCT_OFFSET (Params, password),
 	tp_cm_param_filter_string_nonempty, NULL },
     { NULL }
 };
