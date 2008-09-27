@@ -7,6 +7,8 @@
 #include <telepathy-glib/errors.h>
 #include <telepathy-glib/handle-repo-dynamic.h>
 
+#include "libmsn-pecan/pecan_session.h"
+
 static gpointer parent_class;
 
 enum
@@ -17,6 +19,7 @@ enum
 
 struct PecanTpConnectionPrivate
 {
+    PecanSession *session;
     gchar *account;
     gchar *password;
 };
@@ -137,6 +140,8 @@ start_connecting (TpBaseConnection *conn,
 
     conn->self_handle = tp_handle_ensure (contact_repo, self->priv->account, NULL, NULL);
 
+    self->priv->session = pecan_session_new (self->priv->account, self->priv->password);
+
     tp_base_connection_change_status (conn, TP_CONNECTION_STATUS_CONNECTED, TP_CONNECTION_STATUS_REASON_REQUESTED);
 
     return TRUE;
@@ -145,6 +150,8 @@ start_connecting (TpBaseConnection *conn,
 static void
 shut_down (TpBaseConnection *conn)
 {
+    PecanTpConnection *self = PECAN_TP_CONNECTION (conn);
+    pecan_session_free (self->priv->session);
     tp_base_connection_finish_shutdown (conn);
 }
 
