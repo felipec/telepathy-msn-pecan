@@ -46,22 +46,22 @@ class_init (gpointer g_class,
 GType
 pecan_cm_get_type (void)
 {
-    static volatile gsize type = 0;
+    static volatile gsize type_volatile = 0;
 
-    if (g_once_init_enter (&type))
+    if (g_once_init_enter (&type_volatile))
     {
-	GType g_define_type_id;
+	GType type;
 
-	g_define_type_id = g_type_register_static_simple ((tp_base_connection_manager_get_type ()),
-							  g_intern_static_string ("PecanCm"),
-							  sizeof (PecanCmClass),
-							  class_init,
-							  sizeof (PecanCm),
-							  instance_init,
-							  0);
+	type = g_type_register_static_simple (TP_TYPE_BASE_CONNECTION_MANAGER,
+					      g_intern_static_string ("PecanCm"),
+					      sizeof (PecanCmClass),
+					      class_init,
+					      sizeof (PecanCm),
+					      instance_init,
+					      0);
 
-	g_once_init_leave (&type, g_define_type_id);
+	g_once_init_leave (&type_volatile, type);
     }
 
-    return type;
+    return type_volatile;
 }
