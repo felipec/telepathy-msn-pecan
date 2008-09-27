@@ -9,7 +9,9 @@ TP_LIBS=`pkg-config --libs telepathy-glib`
 CFLAGS+=-Wall
 
 objects = main.o \
-	  manager.o
+	  manager.o \
+	  connection.o \
+	  factory.o
 
 sources = $(patsubst %.o,%.c,$(objects))
 
