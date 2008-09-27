@@ -1,6 +1,7 @@
 #include "manager.h"
 
 #include <dbus/dbus-glib.h>
+#include <dbus/dbus-protocol.h>
 
 #include <telepathy-glib/dbus.h>
 #include <telepathy-glib/errors.h>
@@ -13,7 +14,36 @@ instance_init (GTypeInstance *instance,
 {
 }
 
+typedef struct {
+    gchar *account;
+} Params;
+
+static const TpCMParamSpec params[] = {
+    { "account", DBUS_TYPE_STRING_AS_STRING, G_TYPE_STRING,
+	TP_CONN_MGR_PARAM_FLAG_REQUIRED | TP_CONN_MGR_PARAM_FLAG_REGISTER, NULL,
+	G_STRUCT_OFFSET (Params, account),
+	tp_cm_param_filter_string_nonempty, NULL },
+    { NULL }
+};
+
+static gpointer
+alloc_params (void)
+{
+    return g_slice_new0 (Params);
+}
+
+static void
+free_params (gpointer p)
+{
+    Params *params = p;
+
+    g_free (params->account);
+
+    g_slice_free (Params, params);
+}
+
 static const TpCMProtocolSpec stub_protocols[] = {
+    { "msn", params, alloc_params, free_params },
     { NULL, NULL }
 };
 
