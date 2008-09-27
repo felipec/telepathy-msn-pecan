@@ -46,5 +46,4 @@ $(target):
 
 clean:
 	find -name '.*.d' -delete
-	find -name '*.mo' -delete
 	rm -f $(target) $(objects)
