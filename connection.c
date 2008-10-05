@@ -8,6 +8,7 @@
 #include <telepathy-glib/handle-repo-dynamic.h>
 
 #include "libmsn-pecan/pecan_session.h"
+#include "libmsn-pecan/io/pecan_node.h"
 
 static gpointer parent_class;
 
@@ -22,6 +23,8 @@ struct PecanTpConnectionPrivate
     PecanSession *session;
     gchar *account;
     gchar *password;
+
+    gulong error_sig_handler;
 };
 
 static void
@@ -82,6 +85,8 @@ finalize (GObject *object)
 {
     PecanTpConnection *self = PECAN_TP_CONNECTION (object);
 
+    g_signal_handler_disconnect (object, self->priv->error_sig_handler);
+
     g_free (self->priv->account);
     g_free (self->priv->password);
 
@@ -131,6 +136,27 @@ create_channel_factories (TpBaseConnection *conn)
     return array;
 }
 
+static void
+error_cb (PecanSession *session,
+          GError *error,
+          gpointer data)
+{
+    TpBaseConnection *base_conn = TP_BASE_CONNECTION (data);
+    TpConnectionStatusReason reason = TP_CONNECTION_STATUS_REASON_NONE_SPECIFIED;
+
+    if (error)
+    {
+        if (error->domain == G_IO_CHANNEL_ERROR ||
+            error->domain == PECAN_NODE_ERROR)
+        {
+            reason = TP_CONNECTION_STATUS_REASON_NETWORK_ERROR;
+        }
+    }
+
+    pecan_session_disconnect (session);
+    tp_base_connection_change_status (base_conn, TP_CONNECTION_STATUS_DISCONNECTED, reason);
+}
+
 static gboolean
 start_connecting (TpBaseConnection *conn,
 		  GError **error)
@@ -141,9 +167,10 @@ start_connecting (TpBaseConnection *conn,
     conn->self_handle = tp_handle_ensure (contact_repo, self->priv->account, NULL, NULL);
 
     self->priv->session = pecan_session_new (self->priv->account, self->priv->password);
-    pecan_session_connect (self->priv->session, "messenger.hotmail.com", 1863);
 
-    tp_base_connection_change_status (conn, TP_CONNECTION_STATUS_CONNECTED, TP_CONNECTION_STATUS_REASON_REQUESTED);
+    self->priv->error_sig_handler = g_signal_connect (self->priv->session, "error", G_CALLBACK (error_cb), conn);
+
+    pecan_session_connect (self->priv->session, "messenger.hotmail.com", 1863);
 
     return TRUE;
 }
