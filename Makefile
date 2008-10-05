@@ -4,7 +4,7 @@ RM := rm -f
 TP_CFLAGS := $(shell pkg-config --cflags telepathy-glib)
 TP_LIBS := $(shell pkg-config --libs telepathy-glib)
 
-CFLAGS += -Wall
+CFLAGS += -Wall -ggdb
 
 objects := main.o \
 	   manager.o \
