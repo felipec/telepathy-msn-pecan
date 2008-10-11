@@ -1,0 +1,3 @@
+[submodule "libmsn-pecan"]
+	path = libmsn-pecan
+	url = git://github.com/felipec/libmsn-pecan.git
