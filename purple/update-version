@@ -1,0 +1,8 @@
+#!/bin/bash
+
+version=$(./get-version)
+IFS=".-" read major minor micro _ <<< "$version"
+
+sed -e "s/@PURPLE_MAJOR_VERSION@/$major/g" \
+        -e "s/@PURPLE_MINOR_VERSION@/$minor/g" \
+        -e "s/@PURPLE_MICRO_VERSION@/$micro/g" version.h.in > version.h

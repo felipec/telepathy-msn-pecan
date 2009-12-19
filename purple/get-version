@@ -1,0 +1,6 @@
+#!/bin/sh
+
+v=`cat .version`
+
+# remove initial 'v'
+echo "$v" | sed 's/^v//'
