@@ -1,0 +1,34 @@
+#!/bin/sh
+
+o=$TP_PECAN/telepathy-haze
+d=.
+
+mkdir -p $d/data
+
+cp $o/src/connection-aliasing.c $d
+cp $o/src/connection-aliasing.h $d
+cp $o/src/connection-avatars.c $d
+cp $o/src/connection-avatars.h $d
+cp $o/src/connection-manager.c $d
+cp $o/src/connection-manager.h $d
+cp $o/src/connection-presence.c $d
+cp $o/src/connection-presence.h $d
+cp $o/src/connection.c $d
+cp $o/src/connection.h $d
+cp $o/src/contact-list-channel.c $d
+cp $o/src/contact-list-channel.h $d
+cp $o/src/contact-list.c $d
+cp $o/src/contact-list.h $d
+cp $o/src/debug.c $d
+cp $o/src/debug.h $d
+cp $o/src/defines.h $d
+cp $o/src/im-channel-factory.c $d
+cp $o/src/im-channel-factory.h $d
+cp $o/src/im-channel.c $d
+cp $o/src/im-channel.h $d
+cp $o/src/main.c $d
+cp $o/src/notify.c $d
+cp $o/src/notify.h $d
+cp $o/src/request.c $d
+cp $o/src/request.h $d
+cp $o/data/org.freedesktop.Telepathy.ConnectionManager.haze.service.in $d/data
