@@ -1,0 +1,95 @@
+#!/bin/sh
+
+o=$TP_PECAN/msn-pecan
+d=.
+
+mkdir -p $d
+mkdir -p $d/cmd $d/io $d/ab $d/cvr
+mkdir -p $d/libpurple
+
+cp $o/msn.c $d
+cp $o/nexus.c $d
+cp $o/nexus.h $d
+cp $o/notification.c $d
+cp $o/notification.h $d
+cp $o/page.c $d
+cp $o/page.h $d
+cp $o/session.c $d
+cp $o/session.h $d
+cp $o/session_private.h $d
+cp $o/switchboard.c $d
+cp $o/switchboard.h $d
+cp $o/sync.c $d
+cp $o/sync.h $d
+cp $o/pn_log.c $d
+cp $o/pn_log.h $d
+cp $o/pn_printf.c $d
+cp $o/pn_printf.h $d
+cp $o/pn_util.c $d
+cp $o/pn_util.h $d
+cp $o/pn_buffer.c $d
+cp $o/pn_buffer.h $d
+cp $o/pn_error.c $d
+cp $o/pn_error.h $d
+cp $o/pn_status.c $d
+cp $o/pn_status.h $d
+cp $o/pn_oim.c $d
+cp $o/pn_oim.h $d
+cp $o/pn_dp_manager.c $d
+cp $o/pn_dp_manager.h $d
+cp $o/cmd/cmdproc.c $d/cmd
+cp $o/cmd/cmdproc.h $d/cmd
+cp $o/cmd/cmdproc_private.h $d/cmd
+cp $o/cmd/command.c $d/cmd
+cp $o/cmd/command.h $d/cmd
+cp $o/cmd/command_private.h $d/cmd
+cp $o/cmd/msg.c $d/cmd
+cp $o/cmd/msg.h $d/cmd
+cp $o/cmd/msg_private.h $d/cmd
+cp $o/cmd/table.c $d/cmd
+cp $o/cmd/table.h $d/cmd
+cp $o/cmd/table_private.h $d/cmd
+cp $o/cmd/transaction.c $d/cmd
+cp $o/cmd/transaction.h $d/cmd
+cp $o/cmd/transaction_private.h $d/cmd
+cp $o/io/pn_parser.c $d/io
+cp $o/io/pn_parser.h $d/io
+cp $o/ab/pn_group.c $d/ab
+cp $o/ab/pn_group.h $d/ab
+cp $o/ab/pn_contact.c $d/ab
+cp $o/ab/pn_contact.h $d/ab
+cp $o/ab/pn_contact_priv.h $d/ab
+cp $o/ab/pn_contactlist.c $d/ab
+cp $o/ab/pn_contactlist.h $d/ab
+cp $o/ab/pn_contactlist_priv.h $d/ab
+cp $o/io/pn_stream.c $d/io
+cp $o/io/pn_stream.h $d/io
+cp $o/io/pn_node.c $d/io
+cp $o/io/pn_node.h $d/io
+cp $o/io/pn_node_private.h $d/io
+cp $o/io/pn_cmd_server.c $d/io
+cp $o/io/pn_cmd_server.h $d/io
+cp $o/io/pn_http_server.c $d/io
+cp $o/io/pn_http_server.h $d/io
+cp $o/io/pn_ssl_conn.c $d/io
+cp $o/io/pn_ssl_conn.h $d/io
+cp $o/fix_purple.c $d
+cp $o/fix_purple.h $d
+
+cp $o/pn_global.h $d
+cp $o/pn_locale.h $d
+cp $o/pn_timer.h $d
+
+# slp
+cp $o/cvr/pn_peer_call.c $d/cvr
+cp $o/cvr/pn_peer_call.h $d/cvr
+cp $o/cvr/pn_peer_call_priv.h $d/cvr
+cp $o/cvr/pn_peer_link.c $d/cvr
+cp $o/cvr/pn_peer_link.h $d/cvr
+cp $o/cvr/pn_peer_msg.c $d/cvr
+cp $o/cvr/pn_peer_msg.h $d/cvr
+cp $o/cvr/pn_peer_msg_priv.h $d/cvr
+cp $o/cvr/pn_msnobj.c $d/cvr
+cp $o/cvr/pn_msnobj.h $d/cvr
+cp $o/libpurple/xfer.c $d/libpurple
+cp $o/libpurple/xfer.h $d/libpurple
