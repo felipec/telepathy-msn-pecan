@@ -18,7 +18,7 @@ NSS_LIBS := $(shell pkg-config --libs nss)
 
 CFLAGS := -O2 -ggdb -Wall
 
-module := purple
+module := purple-mini-2
 prefix := /usr
 
 datadir := $(prefix)/share
