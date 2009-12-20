@@ -1,7 +1,7 @@
 CC := $(CROSS_COMPILE)gcc
 
-PURPLE_CFLAGS := $(shell pkg-config --cflags purple)
-PURPLE_LIBS := $(shell pkg-config --libs purple)
+PURPLE_CFLAGS := $(shell pkg-config --cflags purple-mini-2)
+PURPLE_LIBS := $(shell pkg-config --libs purple-mini-2)
 
 TP_CFLAGS := $(shell pkg-config --cflags telepathy-glib)
 TP_LIBS := $(shell pkg-config --libs telepathy-glib)
