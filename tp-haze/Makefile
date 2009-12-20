@@ -33,8 +33,8 @@ objects := connection-aliasing.o \
            notify.o \
            request.o
 
-app := telepathy-haze
-service := org.freedesktop.Telepathy.ConnectionManager.haze.service
+app := telepathy-pecan
+service := org.freedesktop.Telepathy.ConnectionManager.pecan.service
 
 .PHONY: clean
 
@@ -51,7 +51,7 @@ D = $(DESTDIR)
 
 $(app): $(objects)
 $(app): CFLAGS := $(CFLAGS) $(PURPLE_CFLAGS) $(TP_CFLAGS) $(GOBJECT_CFLAGS) $(DBUS_GLIB_CFLAGS) \
-	-DG_LOG_DOMAIN='"haze"' -DPACKAGE_VERSION='"0.3.2"'
+	-DG_LOG_DOMAIN='"pecan"' -DPACKAGE_VERSION='"0.3.2"'
 $(app): LIBS := $(LIBS) $(PURPLE_LIBS) $(TP_LIBS) $(GOBJECT_LIBS) $(DBUS_GLIB_LIBS)
 $(app): LDFLAGS := $(LDFLAGS) -Wl,--no-undefined
 
@@ -66,8 +66,10 @@ $(app):
 clean:
 	$(QUIET_CLEAN)$(RM) $(app) data/$(service) *.o *.d
 
-data/$(service): data/$(service).in
-	sed -e 's#@libexecdir@#$(libexecdir)#g' -e 's#@app@#$(app)#g' $< > $@
+data/$(service): data/org.freedesktop.Telepathy.ConnectionManager.haze.service.in
+	sed -e 's#@libexecdir@#$(libexecdir)#g' \
+		-e 's#@app@#$(app)#g' \
+		-e 's#haze#pecan#' $< > $@
 
 install: $(app) data/$(service)
 	mkdir -p $(D)/$(datadir)/dbus-1/services

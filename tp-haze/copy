@@ -32,3 +32,5 @@ cp $o/src/notify.h $d
 cp $o/src/request.c $d
 cp $o/src/request.h $d
 cp $o/data/org.freedesktop.Telepathy.ConnectionManager.haze.service.in $d/data
+
+perl -p -i -e 's%"haze"%"pecan"%g' $d/connection-manager.c $d/defines.h
