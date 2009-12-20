@@ -6,11 +6,11 @@ MSGFMT := msgfmt
 
 PLATFORM := $(shell $(CC) -dumpmachine | cut -f 3 -d -)
 
-PURPLE_CFLAGS := $(shell pkg-config --cflags purple)
-PURPLE_LIBS := $(shell pkg-config --libs purple)
-PURPLE_LIBDIR := $(shell pkg-config --variable=libdir purple)
-PURPLE_DATADIR := $(shell pkg-config --variable=datadir purple)
-PURPLE_PLUGINDIR := $(PURPLE_LIBDIR)/purple-2
+PURPLE_CFLAGS := $(shell pkg-config --cflags purple-mini-2)
+PURPLE_LIBS := $(shell pkg-config --libs purple-mini-2)
+PURPLE_LIBDIR := $(shell pkg-config --variable=libdir purple-mini-2)
+PURPLE_DATADIR := $(shell pkg-config --variable=datadir purple-mini-2)
+PURPLE_PLUGINDIR := $(PURPLE_LIBDIR)/purple-mini-2
 
 GIO_CFLAGS := $(shell pkg-config --cflags gio-2.0)
 GIO_LIBS := $(shell pkg-config --libs gio-2.0)
