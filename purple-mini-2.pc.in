@@ -1,0 +1,15 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+datarootdir=${prefix}/share
+datadir=${prefix}/share
+
+fake_prefix=@fake_prefix@
+
+Name: libpurple
+Description: libpurple is a GLib-based instant messenger library.
+Version: 2.6.3
+Requires: glib-2.0
+Cflags: -I${fake_prefix}/include/libpurple-mini-2 -I${fake_prefix}/include/libpurple-mini-2/libpurple
+Libs: -L${fake_prefix}/lib -lpurple-mini-2
