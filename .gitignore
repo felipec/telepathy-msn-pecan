@@ -1,0 +1,16 @@
+*.[od]
+*.so
+
+tp-haze/telepathy-pecan
+
+purple/purple.pc
+purple/version.h
+tp-haze/data/*.service
+
+purple-mini-2.pc
+tmp
+
+*.[ch]
+purple/purple.pc.in
+purple/version.h.in
+tp-haze/data/*.service.in
