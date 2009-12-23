@@ -17,11 +17,7 @@ GIO_LIBS := $(shell pkg-config --libs gio-2.0)
 
 # default configuration options
 CVR := y
-LIBSIREN := y
-LIBMSPACK := y
-PLUS_SOUNDS := y
 DEBUG := y
-DIRECTCONN := y
 
 CFLAGS := -O2
 
