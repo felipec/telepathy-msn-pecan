@@ -9,6 +9,8 @@ cp $o/src/connection-aliasing.c $d
 cp $o/src/connection-aliasing.h $d
 cp $o/src/connection-avatars.c $d
 cp $o/src/connection-avatars.h $d
+cp $o/src/connection-capabilities.h $d
+cp $o/src/connection-capabilities.c $d
 cp $o/src/connection-manager.c $d
 cp $o/src/connection-manager.h $d
 cp $o/src/connection-presence.c $d
