@@ -2,6 +2,7 @@ targets := pecan/libmsn-pecan.so \
 	   tp-haze/telepathy-pecan
 
 modules := purple pecan tp-haze
+prefix := /usr
 
 all: $(targets)
 
@@ -12,7 +13,8 @@ pecan/libmsn-pecan.so: purple/libpurple-mini-2.so
 
 purple/libpurple-mini-2.so:
 	$(MAKE) -C purple DESTDIR=$(PWD)/tmp install
-	sed -e 's#@fake_prefix@#$(PWD)/tmp/usr#' \
+	sed -e 's#@fake_prefix@#$(PWD)/tmp#' \
+		-e 's#@prefix@#$(prefix)#' \
 		purple-mini-2.pc.in > \
 		purple-mini-2.pc
 

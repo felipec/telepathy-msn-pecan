@@ -1,11 +1,11 @@
-prefix=/usr
+prefix=@prefix@
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 datarootdir=${prefix}/share
 datadir=${prefix}/share
 
-fake_prefix=@fake_prefix@
+fake_prefix=@fake_prefix@/${prefix}
 
 Name: libpurple
 Description: libpurple is a GLib-based instant messenger library.
