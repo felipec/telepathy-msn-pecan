@@ -1,0 +1,25 @@
+This is a special distribution of msn-pecan + libpurple + telepathy-haze; all
+in one.
+
+So you get to use msn-pecan through telepathy without any dependencies.
+
+You'll need:
+ * msn-pecan 0.1.0
+ * libpurple-mini 2.7.1
+ * telepathy-haze 0.3.4
+
+Other versions would probably work, but you might need to do small modifications.
+
+You'll need to place them in a single directory, and then do:
+ % export TP_PECAN=mydir
+
+Then, back here:
+ % make copy
+ % make prefix=/opt/tp-pecan ssl_dir=/etc/pki/tls/certs/ install
+
+Note: the location of certs might be different on your distro.
+
+To run:
+ % HAZE_PERSIST=1 /opt/tp-pecan/libexec/telepathy-pecan
+
+You should find the 'msn-pecan' option in Empathy now.
