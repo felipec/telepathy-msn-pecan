@@ -121,6 +121,13 @@ cp $o/whiteboard.h $d
 cp $o/xmlnode.c $d
 cp $o/xmlnode.h $d
 
+mkdir -p $d/media
+
+cp $o/media/candidate.h $d/media
+cp $o/media/codec.h $d/media
+cp $o/media/enum-types.h $d/media
+cp $o/media/backend-iface.h $d/media
+
 cp $o/config.h $d
 cp $o/internal.h $d
 cp $o/version.h.in $d
