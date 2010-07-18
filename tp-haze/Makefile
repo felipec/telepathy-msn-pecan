@@ -2,6 +2,7 @@ CC := $(CROSS_COMPILE)gcc
 
 PURPLE_CFLAGS := $(shell pkg-config --cflags purple-mini-2)
 PURPLE_LIBS := $(shell pkg-config --libs purple-mini-2)
+PURPLE_LIBDIR := $(shell pkg-config --variable=libdir purple-mini-2)
 
 TP_CFLAGS := $(shell pkg-config --cflags telepathy-glib)
 TP_LIBS := $(shell pkg-config --libs telepathy-glib)
@@ -53,7 +54,7 @@ $(app): $(objects)
 $(app): CFLAGS := $(CFLAGS) $(PURPLE_CFLAGS) $(TP_CFLAGS) $(GOBJECT_CFLAGS) $(DBUS_GLIB_CFLAGS) \
 	-DG_LOG_DOMAIN='"pecan"' -DPACKAGE_VERSION='"0.3.2"'
 $(app): LIBS := $(LIBS) $(PURPLE_LIBS) $(TP_LIBS) $(GOBJECT_LIBS) $(DBUS_GLIB_LIBS)
-$(app): LDFLAGS := $(LDFLAGS) -Wl,--no-undefined
+$(app): LDFLAGS := $(LDFLAGS) -Wl,--no-undefined -Wl,--enable-new-dtags -Wl,-rpath,$(PURPLE_LIBDIR)
 
 all: $(app)
 
