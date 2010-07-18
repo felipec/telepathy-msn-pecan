@@ -1,6 +1,7 @@
 CC := $(CROSS_COMPILE)gcc
 
 PLATFORM := $(shell $(CC) -dumpmachine | cut -f 3 -d -)
+SSL := y
 
 GOBJECT_CFLAGS := $(shell pkg-config --cflags gobject-2.0 gmodule-2.0)
 GOBJECT_LIBS := $(shell pkg-config --libs gobject-2.0 gmodule-2.0)
@@ -13,8 +14,10 @@ GTHREAD_CFLAGS := $(shell pkg-config --cflags gthread-2.0)
 GTHREAD_LIBS := $(shell pkg-config --libs gthread-2.0)
 endif
 
+ifeq ($(SSL),y)
 NSS_CFLAGS := $(shell pkg-config --cflags nss)
 NSS_LIBS := $(shell pkg-config --libs nss)
+endif
 
 CFLAGS := -O2 -ggdb -Wall
 
@@ -27,6 +30,12 @@ sysconfdir := $(prefix)/etc
 ssl_dir := $(prefix)/share
 plugindir := $(prefix)/lib/$(module)
 includedir := $(prefix)/include/lib$(module)
+
+ifeq ($(PLATFORM),mingw32)
+LDFLAGS += -mms-bitfields \
+	   -Wl,--enable-auto-image-base \
+	   -Wl,--export-all-symbols
+endif
 
 ifneq ($(PLATFORM),mingw32)
 override CFLAGS += -DBR_PTHREADS=0 \
@@ -199,9 +208,9 @@ $(target): $(objects)
 $(target): CFLAGS := $(CFLAGS) $(GOBJECT_CFLAGS) $(LIBXML_CFLAGS) \
 	-D VERSION='"$(version)"' -D DISPLAY_VERSION='"$(version)"'
 $(target): LIBS := $(LIBS) $(GOBJECT_LIBS) $(LIBXML_LIBS) -lm
-$(target): LDFLAGS := -Wl,-soname,$(target).0 -Wl,--no-undefined
+$(target): LDFLAGS := $(LDFLAGS) -Wl,-soname,$(target).0 -Wl,--no-undefined
 
-# ssl
+ifeq ($(SSL),y)
 
 plugin := libssl.$(SHLIBEXT)
 
@@ -221,6 +230,8 @@ $(plugin): LIBS := $(LIBS) $(GOBJECT_LIBS) $(NSS_LIBS)
 
 plugins += $(plugin)
 
+endif # SSL
+
 all: $(target) $(plugins)
 
 version.h: version.h.in
@@ -236,11 +247,19 @@ purple.pc: purple.pc.in
 install: $(target) $(plugins) purple.pc
 	# lib
 	mkdir -p $(D)/$(libdir)
+ifneq ($(PLATFORM),mingw32)
 	install -m 755 $(target) $(D)/$(libdir)/$(target).0
 	ln -sf $(target).0 $(D)/$(libdir)/$(target)
+else
+	install -m 755 $(target).a $(D)/$(libdir)
+	mkdir -p $(D)/$(prefix)/bin
+	install -m 755 $(target) $(D)/$(prefix)/bin
+endif
+ifneq ($(plugins),)
 	# plugins
 	mkdir -p $(D)/$(plugindir)
 	install -m 755 $(plugins) $(D)/$(plugindir)
+endif
 	# pkgconfig
 	mkdir -p $(D)/$(libdir)/pkgconfig
 	install -m 644 purple.pc $(D)/$(libdir)/pkgconfig/$(module).pc
@@ -250,16 +269,22 @@ install: $(target) $(plugins) purple.pc
 	install -m 644 purple-client.h $(D)/$(includedir)/libpurple/purple.h
 
 uninstall:
+ifeq ($(PLATFORM),mingw32)
+	$(RM) $(D)/$(prefix)/bin/$(target)*
+endif
 	$(RM) $(D)/$(libdir)/$(target)*
 	$(RM) -r $(D)/$(plugindir)
-	$(RM) $(D)/$(libdir)/pkgconfig/purple.pc
+	$(RM) $(D)/$(libdir)/pkgconfig/$(module).pc
 	$(RM) -r $(D)/$(includedir)/libpurple
 
 %.o:: %.c
 	$(QUIET_CC)$(CC) $(CFLAGS) -MMD -o $@ -c $<
 
-%.so %.dll::
+%.so::
 	$(QUIET_LINK)$(CC) $(LDFLAGS) -shared -o $@ $^ $(LIBS)
+
+%.dll::
+	$(QUIET_LINK)$(CC) $(LDFLAGS) -shared -Wl,--out-implib,$@.a -o $@ $^ $(LIBS)
 
 clean:
 	$(QUIET_CLEAN)$(RM) $(target) $(plugins)
