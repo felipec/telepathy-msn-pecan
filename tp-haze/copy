@@ -1,7 +1,7 @@
 #!/bin/sh
 
 o=$TP_PECAN/telepathy-haze
-d=.
+d=${1:-.}
 
 mkdir -p $d/data
 

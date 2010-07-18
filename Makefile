@@ -26,9 +26,14 @@ install: $(targets)
 		$(MAKE) -C $$x $@; \
 	done
 
-.PHONY: $(targets) clean
+.PHONY: $(targets) clean copy
 
 clean:
 	for x in $(modules); do \
 		$(MAKE) -C $$x $@; \
+	done
+
+copy:
+	for x in $(modules); do \
+		$$x/copy $$x; \
 	done
