@@ -1,0 +1,111 @@
+From 9169ba6dc14a36cd75eae49a3615296cd01f461f Mon Sep 17 00:00:00 2001
+From: Felipe Contreras <felipe.contreras@gmail.com>
+Date: Sat, 12 Jun 2010 16:30:10 +0300
+Subject: [PATCH 2/3] Make mail extension configurable
+
+Signed-off-by: Felipe Contreras <felipe.contreras@gmail.com>
+---
+ src/connection.c |   13 ++++++++++++-
+ src/notify.c     |   10 +++++++++-
+ 2 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/src/connection.c b/src/connection.c
+index 5c3b7d7..be4b9c0 100644
+--- a/src/connection.c
++++ b/src/connection.c
+@@ -41,9 +41,12 @@
+ #include "connection-presence.h"
+ #include "connection-aliasing.h"
+ #include "connection-avatars.h"
+-#include "connection-mail.h"
+ #include "contact-list-channel.h"
++
++#ifdef ENABLE_EXT
++#include "connection-mail.h"
+ #include "extensions/extensions.h"
++#endif
+ 
+ #ifdef ENABLE_MEDIA
+ #include "connection-capabilities.h"
+@@ -76,8 +79,10 @@ G_DEFINE_TYPE_WITH_CODE(HazeConnection,
+ #endif
+     G_IMPLEMENT_INTERFACE (TP_TYPE_SVC_CONNECTION_INTERFACE_CONTACTS,
+         tp_contacts_mixin_iface_init);
++#ifdef ENABLE_EXT
+     G_IMPLEMENT_INTERFACE (HAZE_TYPE_SVC_CONNECTION_INTERFACE_MAIL_NOTIFICATION,
+         haze_connection_mail_iface_init);
++#endif
+     );
+ 
+ typedef struct _HazeConnectionPrivate
+@@ -528,7 +533,9 @@ haze_connection_constructor (GType type,
+     haze_connection_capabilities_init (object);
+ #endif
+     haze_connection_presence_init (object);
++#ifdef ENABLE_EXT
+     haze_connection_mail_init (object);
++#endif
+ 
+     return (GObject *)self;
+ }
+@@ -591,6 +598,7 @@ haze_connection_class_init (HazeConnectionClass *klass)
+          */
+         TP_IFACE_CONNECTION_INTERFACE_ALIASING,
+         NULL };
++#ifdef ENABLE_EXT
+     static TpDBusPropertiesMixinPropImpl mail_props[] = {
+         { "MailNotificationFlags", NULL, NULL },
+         { "UnreadMailCount", NULL, NULL },
+@@ -606,6 +614,7 @@ haze_connection_class_init (HazeConnectionClass *klass)
+         },
+         { NULL }
+     };
++#endif
+ 
+     DEBUG ("Initializing (HazeConnectionClass *)%p", klass);
+ 
+@@ -646,7 +655,9 @@ haze_connection_class_init (HazeConnectionClass *klass)
+     g_object_class_install_property (object_class, PROP_PROTOCOL_INFO,
+                                      param_spec);
+ 
++#ifdef ENABLE_EXT
+     klass->properties_class.interfaces = prop_interfaces;
++#endif
+     tp_dbus_properties_mixin_class_init (object_class,
+         G_STRUCT_OFFSET (HazeConnectionClass, properties_class));
+ 
+diff --git a/src/notify.c b/src/notify.c
+index 7eb0185..dd99071 100644
+--- a/src/notify.c
++++ b/src/notify.c
+@@ -19,9 +19,12 @@
+  */
+ 
+ #include "notify.h"
+-#include "connection-mail.h"
+ #include "debug.h"
+ 
++#ifdef ENABLE_EXT
++#include "connection-mail.h"
++#endif
++
+ static const gchar *
+ _account_name (PurpleConnection *gc)
+ {
+@@ -89,8 +92,13 @@ haze_notify_userinfo (PurpleConnection *gc,
+ static PurpleNotifyUiOps notify_ui_ops =
+ {
+     .notify_message = haze_notify_message,
++#ifdef ENABLE_EXT
+     .notify_email = haze_connection_mail_notify_email,
+     .notify_emails = haze_connection_mail_notify_emails,
++#else
++    .notify_email = NULL,
++    .notify_emails = NULL,
++#endif
+     .notify_formatted = haze_notify_formatted,
+     .notify_userinfo = haze_notify_userinfo,
+     .notify_uri = haze_notify_uri,
+-- 
+1.7.1
+

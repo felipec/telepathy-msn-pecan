@@ -35,4 +35,7 @@ cp $o/src/request.c $d
 cp $o/src/request.h $d
 cp $o/data/org.freedesktop.Telepathy.ConnectionManager.haze.service.in $d/data
 
+# apply patches
+cat $d/patches/*.patch | patch -p2 -d $d
+
 perl -p -i -e 's%"haze"%"pecan"%g' $d/connection-manager.c $d/defines.h
